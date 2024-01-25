@@ -5,6 +5,7 @@ export default {
 	data() {
 		return {
 			tasks: [],
+			newTask: "",
 		};
 	},
 	mounted() {
@@ -17,15 +18,23 @@ export default {
 			})
 			.catch((err) => console.error(err));
 	},
+	methods: {},
 };
 </script>
 
 <template>
-	<h1>To Do List</h1>
+	<div>
+		<h1>To Do List</h1>
 
-	<ul>
-		<li v-for="(task, i) in tasks" :key="i">{{ task }}</li>
-	</ul>
+		<ul>
+			<li v-for="(task, i) in tasks" :key="i">{{ task.todo }}</li>
+		</ul>
+
+		<div>
+			<input type="text" v-model="newTask" placeholder="Nuovo compito" />
+			<button @click="addTask">Aggiungi</button>
+		</div>
+	</div>
 </template>
 
 <style>
