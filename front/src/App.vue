@@ -69,7 +69,7 @@ export default {
 		<h4>
 			<li v-for="(task, index) in tasks" :key="index">
 				{{ task.todo }}
-				<span @click="deleteTask(index)">X</span>
+				<span @click="deleteTask(index)"><b>X</b></span>
 			</li>
 		</h4>
 	</ul>
@@ -80,13 +80,18 @@ ul {
 	list-style: none;
 	margin: 0;
 	padding: 0;
-	border: 1px solid black;
+}
+li {
+	margin: 10px 10px;
+	display: flex;
+	justify-content: space-between;
+	cursor: pointer;
+	text-transform: capitalize;
+}
+input {
+	padding: 10px;
+	margin: 0 5px;
 
-	li {
-		margin: 10px 0;
-		display: flex;
-		justify-content: space-between;
-		cursor: pointer;
-	}
+	border: none;
 }
 </style>
