@@ -10,7 +10,9 @@ export default {
 	},
 	methods: {
 		pushTask() {
-			const t = this;
+			if (this.newTask.trim() === "") {
+				return;
+			}
 			const params = {
 				task: this.newTask,
 			};
@@ -27,19 +29,31 @@ export default {
 					config
 				)
 				.then((res) => {
-					t.tasks = res.data;
-					t.newTask = "";
+					this.tasks = res.data;
+					this.newTask = "";
+				})
+				.catch((err) => console.log(err));
+		},
+		deleteTask(index) {
+			const params = {
+				params: {
+					index: index,
+				},
+			};
+
+			axios
+				.get("http://localhost/php-todo-list-json/back/deleteTasks.php", params)
+				.then((res) => {
+					this.tasks = res.data;
 				})
 				.catch((err) => console.log(err));
 		},
 	},
 	mounted() {
-		const t = this;
-
 		axios
 			.get("http://localhost/php-todo-list-json/back/getTasks.php")
 			.then((res) => {
-				t.tasks = res.data;
+				this.tasks = res.data;
 			})
 			.catch((err) => console.log(err));
 	},
@@ -52,8 +66,27 @@ export default {
 		<input type="submit" value="Crea Nuova Task" />
 	</form>
 	<ul>
-		<li v-for="(task, index) in tasks" :key="index">
-			{{ task.todo }}
-		</li>
+		<h4>
+			<li v-for="(task, index) in tasks" :key="index">
+				{{ task.todo }}
+				<span @click="deleteTask(index)">X</span>
+			</li>
+		</h4>
 	</ul>
 </template>
+
+<style>
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	border: 1px solid black;
+
+	li {
+		margin: 10px 0;
+		display: flex;
+		justify-content: space-between;
+		cursor: pointer;
+	}
+}
+</style>
